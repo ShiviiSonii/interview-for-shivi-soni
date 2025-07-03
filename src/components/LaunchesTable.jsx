@@ -3,7 +3,7 @@ import { TABLE_COLUMNS } from "@/lib/constants.js"
 import { formatDate, getOrbit } from "@/lib/helper.js"
 import StatusBadge from "./StatusBadge.jsx"
 
-export default function LaunchesTable({ launches, currentPage, itemsPerPage }) {
+export default function LaunchesTable({ launches, currentPage, itemsPerPage, onLaunchClick }) {
   const startIndex = (currentPage - 1) * itemsPerPage
 
   return (
@@ -20,7 +20,7 @@ export default function LaunchesTable({ launches, currentPage, itemsPerPage }) {
         </TableHeader>
         <TableBody>
           {launches.map((launch, index) => (
-            <TableRow key={launch.flight_number} className="hover:bg-gray-50">
+            <TableRow key={launch.flight_number} className="hover:bg-gray-50" onClick={() => onLaunchClick(launch.flight_number)}>
               <TableCell className="font-medium">{String(startIndex + index + 1).padStart(2, "0")}</TableCell>
               <TableCell>{formatDate(launch.launch_date_utc)}</TableCell>
               <TableCell>{launch.launch_site.site_name}</TableCell>

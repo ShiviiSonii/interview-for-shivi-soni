@@ -85,3 +85,31 @@ export const buildQueryParams = (filters = {}) => {
     queryString: params.toString(),
   };
 };
+
+export const formatDetailedDate = (dateString) => {
+  const date = new Date(dateString);
+  return (
+    date.toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }) +
+    " " +
+    date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+  );
+};
+
+export const getPayloadInfo = (launch) => {
+  const payload = launch.rocket?.second_stage?.payloads?.[0];
+  if (!payload) return { type: "N/A", manufacturer: "N/A", nationality: "N/A" };
+
+  return {
+    type: payload.payload_type || "N/A",
+    manufacturer: payload.manufacturer || "N/A",
+    nationality: payload.nationality || "N/A",
+  };
+};

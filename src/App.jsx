@@ -6,6 +6,8 @@ import Filters from "@/components/Filters.jsx"
 import LaunchesTable from "@/components/LaunchesTable.jsx"
 import Pagination from "@/components/Pagination.jsx"
 import LoadingSpinner from "@/components/LoadingSpinner.jsx"
+import LaunchModal from "./components/LaunchModal"
+import { useState } from "react"
 
 export default function App() {
   const {
@@ -21,8 +23,22 @@ export default function App() {
     handlePageChange,
     handleTimeFilterChange,
     handleStatusFilterChange,
-    handleSortChange,
+    handleSortChange
   } = useSpaceXLaunches();
+
+  const [selectedFlightNumber, setSelectedFlightNumber] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleLaunchClick = (flightNumber) => {
+    setSelectedFlightNumber(flightNumber)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedFlightNumber(null)
+  }
+
 
   return (
     <div className="container mx-auto py-4">
@@ -52,6 +68,7 @@ export default function App() {
             launches={launches}
             currentPage={currentPage}
             itemsPerPage={ITEMS_PER_PAGE}
+            onLaunchClick={handleLaunchClick}
           />
 
           <Pagination
@@ -61,6 +78,8 @@ export default function App() {
             itemsPerPage={ITEMS_PER_PAGE}
             onPageChange={handlePageChange}
           />
+
+          <LaunchModal isOpen={isModalOpen} onClose={handleCloseModal} flightNumber={selectedFlightNumber} />
         </>
       )}
     </div>

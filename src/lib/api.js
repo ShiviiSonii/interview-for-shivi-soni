@@ -46,3 +46,20 @@ export const fetchTotalLaunches = async (filters = {}) => {
     return 0;
   }
 };
+
+export const fetchLaunchDetails = async (flightNumber) => {
+  try {
+    const url = `${API_URL}/${flightNumber}`;
+    console.log("Fetching launch details from:", url);
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching launch details:", error);
+    throw error;
+  }
+};
