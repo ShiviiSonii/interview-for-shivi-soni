@@ -44,17 +44,6 @@ export default function App() {
     <div className="container mx-auto py-4">
       <Header />
 
-      {loading ? (
-        <LoadingSpinner />
-      ) : error ? (
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <div className="text-xl text-red-600 mb-2">Error loading launches</div>
-            <div className="text-gray-600">{error}</div>
-          </div>
-        </div>
-      ) : (
-        <>
           <Filters
             timeFilter={timeFilter}
             statusFilter={statusFilter}
@@ -66,10 +55,13 @@ export default function App() {
 
           <LaunchesTable
             launches={launches}
+            loading={loading}
+            error={error}
             currentPage={currentPage}
             itemsPerPage={ITEMS_PER_PAGE}
             onLaunchClick={handleLaunchClick}
           />
+
 
           <Pagination
             currentPage={currentPage}
@@ -80,8 +72,6 @@ export default function App() {
           />
 
           <LaunchModal isOpen={isModalOpen} onClose={handleCloseModal} flightNumber={selectedFlightNumber} />
-        </>
-      )}
     </div>
   );
 }
