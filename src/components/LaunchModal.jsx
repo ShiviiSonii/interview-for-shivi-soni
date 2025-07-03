@@ -49,7 +49,7 @@ export default function LaunchModal({ isOpen, onClose, flightNumber }) {
   if (error) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-sm border-2 border-blue-400">
+        <DialogContent className="max-w-sm border-2">
           <div className="text-center py-8">
             <div className="text-red-600 mb-2">Error loading launch details</div>
             <div className="text-gray-600">{error}</div>

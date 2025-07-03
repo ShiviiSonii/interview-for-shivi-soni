@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { fetchSpaceXLaunches, fetchTotalLaunches } from "@/lib/api.js";
 import { getDateRange } from "@/lib/helper.js";
 import { ITEMS_PER_PAGE } from "@/lib/constants.js";
@@ -11,6 +11,8 @@ export default function useSpaceXLaunches() {
   const [currentPage, setCurrentPage] = useState(1);
   const [timeFilter, setTimeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+
+  const debounceRef = useRef(null);
 
   const loadLaunches = useCallback(
     async (page = 1) => {
@@ -45,8 +47,15 @@ export default function useSpaceXLaunches() {
   );
 
   useEffect(() => {
-    setCurrentPage(1); // Reset to first page when filters change
-    loadLaunches(1);
+    setCurrentPage(1);
+
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    debounceRef.current = setTimeout(() => {
+      loadLaunches(1);
+    }, 400);
+
+    return () => clearTimeout(debounceRef.current);
   }, [loadLaunches]);
 
   const handlePageChange = (page) => {
