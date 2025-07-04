@@ -10,6 +10,7 @@ import LaunchModal from "./components/LaunchModal"
 import { useState } from "react"
 
 export default function App() {
+  // Getting all required values and handlers from the custom hook
   const {
     launches,
     loading,
@@ -26,53 +27,62 @@ export default function App() {
     handleSortChange
   } = useSpaceXLaunches();
 
+  // State to manage selected launch and modal visibility
   const [selectedFlightNumber, setSelectedFlightNumber] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  // Open modal with selected flight number
   const handleLaunchClick = (flightNumber) => {
     setSelectedFlightNumber(flightNumber)
     setIsModalOpen(true)
   }
 
+  // Close modal and clear selected flight
   const handleCloseModal = () => {
     setIsModalOpen(false)
     setSelectedFlightNumber(null)
   }
 
-
   return (
     <div className="py-4">
+      {/* App header */}
       <Header />
 
-          <Filters
-            timeFilter={timeFilter}
-            statusFilter={statusFilter}
-            sortBy={sortBy}
-            onTimeFilterChange={handleTimeFilterChange}
-            onStatusFilterChange={handleStatusFilterChange}
-            onSortChange={handleSortChange}
-          />
+      {/* Filter section for time, status, and sorting */}
+      <Filters
+        timeFilter={timeFilter}
+        statusFilter={statusFilter}
+        sortBy={sortBy}
+        onTimeFilterChange={handleTimeFilterChange}
+        onStatusFilterChange={handleStatusFilterChange}
+        onSortChange={handleSortChange}
+      />
 
-          <LaunchesTable
-            launches={launches}
-            loading={loading}
-            error={error}
-            currentPage={currentPage}
-            itemsPerPage={ITEMS_PER_PAGE}
-            onLaunchClick={handleLaunchClick}
-          />
+      {/* Table showing launches */}
+      <LaunchesTable
+        launches={launches}
+        loading={loading}
+        error={error}
+        currentPage={currentPage}
+        itemsPerPage={ITEMS_PER_PAGE}
+        onLaunchClick={handleLaunchClick}
+      />
 
+      {/* Pagination component */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={totalItems}
+        itemsPerPage={ITEMS_PER_PAGE}
+        onPageChange={handlePageChange}
+      />
 
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            totalItems={totalItems}
-            itemsPerPage={ITEMS_PER_PAGE}
-            onPageChange={handlePageChange}
-          />
-
-          <LaunchModal isOpen={isModalOpen} onClose={handleCloseModal} flightNumber={selectedFlightNumber} />
+      {/* Modal showing details of selected launch */}
+      <LaunchModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        flightNumber={selectedFlightNumber}
+      />
     </div>
   );
 }
-

@@ -1,7 +1,10 @@
+// Base API URL for SpaceX data
 export const API_URL = "https://api.spacexdata.com/v3/launches";
 
+// Number of items to show per page in pagination
 export const ITEMS_PER_PAGE = 12;
 
+// Time-based filter options for launches
 export const TIME_FILTERS = [
   { label: "Any Time", value: "all" },
   { label: "Past Week", value: "1week" },
@@ -13,6 +16,7 @@ export const TIME_FILTERS = [
   { label: "Custom Range", value: "custom" },
 ];
 
+// Launch status filter options
 export const STATUS_FILTERS = [
   { label: "All Launches", value: "all" },
   { label: "Successful", value: "success" },
@@ -20,6 +24,7 @@ export const STATUS_FILTERS = [
   { label: "Upcoming", value: "upcoming" },
 ];
 
+// Columns used in the launch table with optional widths
 export const TABLE_COLUMNS = [
   { key: "no", label: "No.", width: "w-16" },
   { key: "launched", label: "Launched (UTC)", width: "min-w-48" },

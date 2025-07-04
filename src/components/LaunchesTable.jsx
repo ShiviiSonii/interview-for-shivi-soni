@@ -9,7 +9,7 @@ export default function LaunchesTable({ launches, loading, error, currentPage, i
 
   return (
     <div className="w-full page_layout">
-    <div className="border rounded-md h-auto min-h-[70vh] overflow-hidden">
+    <div className="border rounded-sm h-auto min-h-[70vh] overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow className="bg-gray-50">

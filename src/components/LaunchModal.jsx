@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { X, Play } from "lucide-react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
@@ -13,12 +11,14 @@ export default function LaunchModal({ isOpen, onClose, flightNumber }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  // Fetch launch details whenever modal opens with a valid flight number
   useEffect(() => {
     if (isOpen && flightNumber) {
       loadLaunchDetails()
     }
   }, [isOpen, flightNumber])
 
+  // Function to load launch details from API
   const loadLaunchDetails = async () => {
     try {
       setLoading(true)
@@ -32,12 +32,14 @@ export default function LaunchModal({ isOpen, onClose, flightNumber }) {
     }
   }
 
+  // Don't render anything if modal is closed
   if (!isOpen) return null
 
+  // Show loading spinner while fetching data
   if (loading) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-sm border-2 border-blue-400">
+        <DialogContent className="max-w-sm border-2">
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           </div>
@@ -46,6 +48,7 @@ export default function LaunchModal({ isOpen, onClose, flightNumber }) {
     )
   }
 
+  // Show error message if API call fails
   if (error) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
@@ -59,6 +62,7 @@ export default function LaunchModal({ isOpen, onClose, flightNumber }) {
     )
   }
 
+  // Return nothing if no launch data available
   if (!launch) return null
 
   const payloadInfo = getPayloadInfo(launch)
@@ -66,9 +70,8 @@ export default function LaunchModal({ isOpen, onClose, flightNumber }) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-sm p-2 gap-0 bg-white rounded-lg h-auto max-h-[620px] overflow-auto">
-
         <div className="p-4 space-y-4">
-          {/* Header Section */}
+          {/* Header Section: Patch image + mission info + action icons */}
           <div className="flex items-start gap-3">
             {/* Mission Patch */}
             <div className="flex-shrink-0">
@@ -96,37 +99,32 @@ export default function LaunchModal({ isOpen, onClose, flightNumber }) {
               </div>
               <p className="text-sm text-gray-600 mb-2">{launch.rocket.rocket_name}</p>
 
-              {/* Action Icons */}
+              {/* Action Icons: NASA, Wikipedia, YouTube */}
               <div className="flex items-center gap-1">
-                {/* NASA Logo */}
                 <img src="./nasa.png" alt="nasa logo" height={"auto"} width={20}/>
 
-                {/* Wikipedia Icon */}
                 {launch.links?.wikipedia && (
                   <button
                     onClick={() => window.open(launch.links.wikipedia, "_blank")}
-                    className=""
                     title="Wikipedia"
                   >
                     <img src="./wikipedia.png" alt="wikipedia logo" height={"auto"} width={20}/>
                   </button>
                 )}
 
-                {/* YouTube Video Icon */}
                 {launch.links?.video_link && (
                   <button
                     onClick={() => window.open(launch.links.video_link, "_blank")}
-                    className=""
                     title="Watch Video"
                   >
-                     <img src="./youtube.png" alt="youtube logo" height={"auto"} width={20}/>
+                    <img src="./youtube.png" alt="youtube logo" height={"auto"} width={20}/>
                   </button>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Mission Description */}
+          {/* Launch Description with Wikipedia link */}
           {launch.details && (
             <div>
               <p className="text-sm text-gray-800 leading-relaxed">
@@ -171,12 +169,12 @@ export default function LaunchModal({ isOpen, onClose, flightNumber }) {
   )
 }
 
+// Helper component to display a row in the details section
 function DetailRow({ label, value, isLast = false }) {
   return (
-   <div className={`flex items-center py-2.5 ${!isLast ? "border-b border-gray-200" : ""}`}>
-  <span className="text-sm text-gray-600 min-w-[150px]">{label}</span>
-  <span className="text-sm text-black font-normal">{value}</span>
-</div>
-
+    <div className={`flex items-center py-2.5 ${!isLast ? "border-b border-gray-200" : ""}`}>
+      <span className="text-sm text-gray-600 min-w-[150px]">{label}</span>
+      <span className="text-sm text-black font-normal">{value}</span>
+    </div>
   )
 }

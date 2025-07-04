@@ -1,15 +1,25 @@
-"use client"
-
 import { useState } from "react"
 import { ChevronDown, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu"
 import CustomDatePicker from "./CustomDatePicker"
 
-export default function DateDropdown({ value, options, onChange, icon: Icon, className = "", customDateRange = null }) {
+export default function DateDropdown({
+  value,
+  options,
+  onChange,
+  icon: Icon,
+  className = "",
+  customDateRange = null
+}) {
   const [showCustomPicker, setShowCustomPicker] = useState(false)
 
-  // Handle custom range display
+  // Display label based on selected option or custom date range
   const getDisplayLabel = () => {
     if (value === "custom" && customDateRange) {
       const startDate = new Date(customDateRange.start).toLocaleDateString("en-US", {
@@ -24,38 +34,60 @@ export default function DateDropdown({ value, options, onChange, icon: Icon, cla
       })
       return `${startDate} - ${endDate}`
     }
+
     const selectedOption = options.find((opt) => opt.value === value)
     return selectedOption ? selectedOption.label : options[0].label
   }
 
+  // When a filter option is selected
   const handleSelect = (val) => {
     if (val === "custom") {
-      setShowCustomPicker(true)
+      setShowCustomPicker(true) // Show date picker for custom option
     } else {
       setShowCustomPicker(false)
       onChange(val)
     }
   }
 
+  // When user submits a custom date range
   const handleCustomSubmit = (range) => {
     onChange("custom", range)
     setShowCustomPicker(false)
   }
 
+  // Close the custom date picker without applying
   const handleCustomCancel = () => {
     setShowCustomPicker(false)
   }
 
   return (
     <>
+      {/* Dropdown button */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className={`gap-2 bg-transparent min-w-0 ${className}`} size="sm">
-            {Icon ? <Icon className="h-4 w-4 flex-shrink-0" /> : <Calendar className="h-4 w-4 flex-shrink-0" />}
-            <span className="truncate max-w-32 sm:max-w-48 text-left">{getDisplayLabel()}</span>
+          <Button
+            variant="outline"
+            className={`gap-2 bg-transparent min-w-0 ${className}`}
+            size="sm"
+          >
+            {/* Optional icon (defaults to calendar) */}
+            {Icon ? (
+              <Icon className="h-4 w-4 flex-shrink-0" />
+            ) : (
+              <Calendar className="h-4 w-4 flex-shrink-0" />
+            )}
+            
+            {/* Display label with truncation */}
+            <span className="truncate max-w-32 sm:max-w-48 text-left">
+              {getDisplayLabel()}
+            </span>
+
+            {/* Down arrow icon */}
             <ChevronDown className="h-4 w-4 flex-shrink-0" />
           </Button>
         </DropdownMenuTrigger>
+
+        {/* Dropdown menu options */}
         <DropdownMenuContent align="start" className="w-56">
           {options.map((option) => (
             <DropdownMenuItem
@@ -72,7 +104,13 @@ export default function DateDropdown({ value, options, onChange, icon: Icon, cla
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {showCustomPicker && <CustomDatePicker onSubmit={handleCustomSubmit} onCancel={handleCustomCancel} />}
+      {/* Custom date picker modal if custom is selected */}
+      {showCustomPicker && (
+        <CustomDatePicker
+          onSubmit={handleCustomSubmit}
+          onCancel={handleCustomCancel}
+        />
+      )}
     </>
   )
 }
