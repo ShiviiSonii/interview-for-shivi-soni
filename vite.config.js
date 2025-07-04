@@ -11,4 +11,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"), // ✅ enables @/components etc.
     },
   },
+  optimizeDeps: {
+    include: ["@radix-ui/react-select"],
+  },
 });
