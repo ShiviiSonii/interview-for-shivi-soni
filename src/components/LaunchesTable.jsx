@@ -8,7 +8,8 @@ export default function LaunchesTable({ launches, loading, error, currentPage, i
   const startIndex = (currentPage - 1) * itemsPerPage
 
   return (
-    <div className="border rounded-lg h-auto min-h-[70vh] overflow-hidden mx-20">
+    <div className="w-full page_layout">
+    <div className="border rounded-lg h-auto min-h-[70vh] overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow className="bg-gray-50">
@@ -61,6 +62,7 @@ export default function LaunchesTable({ launches, loading, error, currentPage, i
           )}
         </TableBody>
       </Table>
+    </div>
     </div>
   )
 }

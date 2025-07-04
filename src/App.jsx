@@ -41,7 +41,7 @@ export default function App() {
 
 
   return (
-    <div className="container mx-auto py-4">
+    <div className="py-4">
       <Header />
 
           <Filters

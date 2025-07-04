@@ -6,6 +6,12 @@ body {
     font-family: Work Sans, DM Sans, Open Sans, sans-serif;
 }
 
+@layer components {
+  .page_layout {
+    @apply  w-full max-w-[1198px] mx-auto px-6;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

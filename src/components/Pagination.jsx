@@ -24,7 +24,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, tota
   }
 
   return (
-    <div className="flex items-center justify-between flex-wrap gap-2 mt-4 px-20">
+    <div className="flex items-center justify-between flex-wrap gap-2 mt-4 w-full page_layout">
       <div className="text-sm text-gray-600">
         Showing {startItem} to {endItem} of {totalItems} launches
       </div>

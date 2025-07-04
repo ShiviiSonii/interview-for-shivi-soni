@@ -10,7 +10,7 @@ export default function Filters({
   onStatusFilterChange,
 }) {
   return (
-    <div className="flex items-center gap-4 mb-4 justify-between flex-wrap px-20">
+    <div className="flex items-center gap-4 mb-4 justify-between flex-wrap w-full page_layout ">
       <DateDropdown value={timeFilter} options={TIME_FILTERS} onChange={onTimeFilterChange} icon={Filter} />
 
       <FilterDropdown value={statusFilter} options={STATUS_FILTERS} onChange={onStatusFilterChange} />
