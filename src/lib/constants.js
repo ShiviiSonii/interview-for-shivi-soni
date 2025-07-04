@@ -3,10 +3,14 @@ export const API_URL = "https://api.spacexdata.com/v3/launches";
 export const ITEMS_PER_PAGE = 12;
 
 export const TIME_FILTERS = [
-  { label: "All Time", value: "all" },
+  { label: "Any Time", value: "all" },
+  { label: "Past Week", value: "1week" },
+  { label: "Past Month", value: "1month" },
+  { label: "Past 3 Months", value: "3months" },
   { label: "Past 6 Months", value: "6months" },
   { label: "Past Year", value: "1year" },
   { label: "Past 2 Years", value: "2years" },
+  { label: "Custom Range", value: "custom" },
 ];
 
 export const STATUS_FILTERS = [

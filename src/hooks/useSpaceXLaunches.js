@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback, useRef } from "react";
 import { fetchSpaceXLaunches, fetchTotalLaunches } from "@/lib/api.js";
 import { getDateRange } from "@/lib/helper.js";
@@ -11,7 +13,7 @@ export default function useSpaceXLaunches() {
   const [currentPage, setCurrentPage] = useState(1);
   const [timeFilter, setTimeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-
+  const [customDateRange, setCustomDateRange] = useState(null);
   const debounceRef = useRef(null);
 
   const loadLaunches = useCallback(
@@ -19,9 +21,10 @@ export default function useSpaceXLaunches() {
       try {
         setLoading(true);
         setError(null);
-
         const offset = (page - 1) * ITEMS_PER_PAGE;
-        const dateRange = getDateRange(timeFilter);
+
+        // Pass customDateRange to getDateRange when timeFilter is "custom"
+        const dateRange = getDateRange(timeFilter, customDateRange);
 
         const filters = {
           limit: ITEMS_PER_PAGE,
@@ -43,18 +46,15 @@ export default function useSpaceXLaunches() {
         setLoading(false);
       }
     },
-    [timeFilter, statusFilter]
+    [timeFilter, statusFilter, customDateRange] // Add customDateRange to dependencies
   );
 
   useEffect(() => {
     setCurrentPage(1);
-
     if (debounceRef.current) clearTimeout(debounceRef.current);
-
     debounceRef.current = setTimeout(() => {
       loadLaunches(1);
     }, 400);
-
     return () => clearTimeout(debounceRef.current);
   }, [loadLaunches]);
 
@@ -63,8 +63,13 @@ export default function useSpaceXLaunches() {
     loadLaunches(page);
   };
 
-  const handleTimeFilterChange = (filter) => {
+  const handleTimeFilterChange = (filter, range = null) => {
     setTimeFilter(filter);
+    if (filter === "custom" && range) {
+      setCustomDateRange(range);
+    } else {
+      setCustomDateRange(null);
+    }
   };
 
   const handleStatusFilterChange = (filter) => {
@@ -82,6 +87,7 @@ export default function useSpaceXLaunches() {
     totalItems,
     timeFilter,
     statusFilter,
+    customDateRange, // Expose customDateRange for debugging
     handlePageChange,
     handleTimeFilterChange,
     handleStatusFilterChange,

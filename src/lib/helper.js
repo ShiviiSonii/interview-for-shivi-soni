@@ -43,20 +43,34 @@ export const getStatusInfo = (launch) => {
   }
 };
 
-export const getDateRange = (timeFilter) => {
+export const getDateRange = (timeFilter, customRange = null) => {
   const now = new Date();
   const ranges = {
+    "1week": new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7),
+    "1month": new Date(now.getFullYear(), now.getMonth() - 1, now.getDate()),
+    "3months": new Date(now.getFullYear(), now.getMonth() - 3, now.getDate()),
     "6months": new Date(now.getFullYear(), now.getMonth() - 6, now.getDate()),
     "1year": new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
     "2years": new Date(now.getFullYear() - 2, now.getMonth(), now.getDate()),
   };
 
-  return ranges[timeFilter]
-    ? {
-        start: ranges[timeFilter].toISOString(),
-        end: now.toISOString(),
-      }
-    : null;
+  const format = (date) => date.toISOString().split("T")[0];
+
+  // Handle custom range
+  if (timeFilter === "custom" && customRange) {
+    return {
+      start: format(new Date(customRange.start)),
+      end: format(new Date(customRange.end)),
+    };
+  }
+
+  // Handle predefined ranges
+  if (!ranges[timeFilter]) return null;
+
+  return {
+    start: format(ranges[timeFilter]),
+    end: format(now),
+  };
 };
 
 export const buildQueryParams = (filters = {}) => {
@@ -75,6 +89,7 @@ export const buildQueryParams = (filters = {}) => {
 
   if (filters.limit) params.append("limit", filters.limit);
   if (filters.offset) params.append("offset", filters.offset);
+
   if (filters.dateRange) {
     params.append("start", filters.dateRange.start);
     params.append("end", filters.dateRange.end);
